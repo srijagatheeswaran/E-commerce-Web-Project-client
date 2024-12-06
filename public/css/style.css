@@ -1,0 +1,38 @@
+body{
+    background-color:whitesmoke;
+}
+.loginBox {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginBox form {
+    height: 400px;
+    width: 50%;
+}
+
+.link {
+    text-align: center;
+
+}
+.dashboard{
+    background-color: whitesmoke;
+    height: 100vh;
+    width: 100%;
+}
+.dashboard header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+}
+
+/* .dashboard header div {
+    display: flex;
+    height: max-content;
+    gap: 10px;
+} */
