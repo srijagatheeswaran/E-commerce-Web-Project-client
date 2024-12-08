@@ -5,9 +5,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class,"index"]);
 
-Route::get("login", [UserController::class,"login"])->name("login");
+Route::get('/dashboard', [UserController::class,"index"])->name("dashboard");
 
-Route::get("register", [UserController::class,"register"])->name("register");
+Route::get('logout',[UserController::class,'logout'])->name('logout');
 
-Route::post("register", [UserController::class,"createUser"])->name("register.post");
+Route::get("/login", [UserController::class,"login"])->name("login");
+Route::post("/login", [UserController::class,"loginPost"])->name("login.post");
+
+
+Route::get("/register", [UserController::class,"register"])->name("register");
+
+Route::post("/register", [UserController::class,"createUser"])->name("register.post");
 

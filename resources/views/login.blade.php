@@ -106,6 +106,47 @@
                 }
             }
 
+            if (errors) {
+                // console.log('hia')
+                var btn = $('#loginbtn');
+                btn.prop('disabled', true);
+                btn.text('Please wait...');
+                $.ajax({
+                    url: '{{route('login.post')}}',
+                    method: 'post',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res)
+                        btn.prop('disabled', false);
+                        btn.text('Sign in');
+                        if (res.status == 400) {
+                            console.log(res.message, res.message.email)
+                            if (res.message.email && res.message.password) {
+                                showError('email', res.message.email)
+                                showError('password', res.message.password)
+                            }
+                            else {
+                                if (res.message.email) {
+                                    showError('email', res.message.email)
+                                } else if (res.message.password) {
+                                    showError('password', res.message.password)
+                                }
+                            }
+                        }
+                        else if (res.status == 401) {
+                            console.log(res.message)
+                            showMessage('text-danger', res.message)
+                        }
+                        else {
+                            if (res.status == 200 && res.message == "success") {
+                                window.location = '{{route('dashboard')}}'
+                            }
+
+                        }
+                    }
+                })
+            }
             
         })
     })

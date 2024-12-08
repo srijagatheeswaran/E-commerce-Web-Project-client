@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Add Admin')
+@section('title', 'Register')
 @section('content')
 
 <!-- <div class="container">
@@ -12,7 +12,7 @@
 </div> -->
 <div class="loginBox">
     <h1>Register</h1>
-    
+
     <form class="form">
         @csrf
         <div data-mdb-input-init class="form-outline mb-4">
@@ -50,11 +50,11 @@
         <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4"
             id="loginbtn">Sign
             Up</button>
-            <div class="link">
-                <span>I Already Have An Account <a href="{{route('login')}}">click</a></span>
-
-            </div>
         <div id="loginAlert"></div>
+        <div class="link">
+            <span>I Already Have An Account <a href="{{route('login')}}">click</a></span>
+
+        </div>
 
     </form>
 </div>
@@ -72,7 +72,7 @@
                 $('#emailerr').text(message)
                 $('#emailerr').show()
             }
-            else if(name == 'mobile_number'){
+            else if (name == 'mobile_number') {
                 $('#mobile_numbererr').text(message)
                 $('#mobile_numbererr').show()
             }
@@ -175,6 +175,54 @@
                     showError('repassword', 'Confirm Password not match password!')
                     errors = false
                 }
+            }
+            if (errors) {
+                // console.log('hia')
+                var btn = $('#loginbtn');
+                btn.prop('disabled', true);
+                btn.text('Please wait...');
+                $.ajax({
+                    url: '{{route("register.post")}}',
+                    method: 'post',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res)
+                        btn.prop('disabled', false);
+                        btn.text('Sign Up');
+                        if (res.status == 400) {
+                            console.log(res.message)
+                            $.map(res.message, function (value, index) {
+                                if (index == 'name') {
+                                    showError('name', value)
+                                }
+                                else if (index == 'email') {
+                                    showError('email', value)
+                                }
+                                else if (index == 'mobile_number') {
+                                    showError('mobile_number', value)
+                                }
+                                else if (index == 'password') {
+                                    showError('password', value)
+                                } else if (index == 'repassword') {
+                                    showError('repassword', value)
+                                }
+
+                            });
+                        }
+
+                        else {
+                            if (res.status == 200 && res.message == "registered successfully") {
+                                showMessage('text-success', res.message)
+                                $('#name').val('');
+                                $('#email').val('');
+                                $('#mobile_number').val('');
+                                $('#password').val('');
+                                $('#repassword').val('');
+                            }
+                        }
+                    }
+                })
             }
         })
     })
